@@ -1,0 +1,13 @@
+{
+    "name": "marinasantana/watchso",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Marina A.",
+            "email": "25265018+MarinaBSA@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.3"
+    }
+}
