@@ -112,15 +112,13 @@ final class SORequest
                 $questions = array();
                 foreach($items->items as $item) {
                     array_push($questions, new Question($item->link,$item->title, $item->creation_date,
-                        $item->answer_count, $item->score, $item->view_count, $item->owner->reputation, $item->tags));
+                        $item->answer_count, $item->score, $item->view_count, $item->owner->reputation ?? 0, $item->tags ?? [""]));
                 }
                 return $questions;
             }
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             echo 'Error: Could not get requested question. Source:'.get_class($this);
-
         }
-
     }
 
 
