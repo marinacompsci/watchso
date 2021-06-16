@@ -1,28 +1,42 @@
 let table = document.getElementById("resultsTable");
 let tableBody = document.getElementById("tableBody");
 let submitButton = document.getElementById("submitSearch");
-let input =  document.getElementById("tag");
-let tag = input.value;
-
 const source = "https://api.stackexchange.com/2.2/search/advanced?";
+let tag;
 
 /////////////////////  STARTING POINT //////////////////////////////////////////////////////////////////////
-submitButton.onclick = () => {
-    getQuestions();
-};
+submitButton.onclick = () => {getQuestions();};
 
-input.onkeypress = (ev) => {
+document.getElementById("tag").onkeypress = (ev) => {
     if (ev.key === "Enter") {getQuestions();}
 };
 /////////////////////  FUNCTIONS //////////////////////////////////////////////////////////////////////
 
 function showTableData(questions) {
     //TODO: what if there are no questions?
-
     console.log("Showing data...");
 
     if (tableBody.hasChildNodes()) {
-        tableBody.childNodes.forEach((node) => {node.remove()});
+        console.log("here")
+        /*
+        node.childNodes is a live collection.
+        As you remove items from it, the collection itself is modified (live while you're iterating).
+        Trying to iterate it as you are, causes elements to be removed from the collection and moved down in the
+        array-like structure while you're iterating it, causing you to miss nodes.
+        As an example, when you call removeChild() on the 2nd element in the collection,
+        that element itself is then removed from the collection. That causes what was the 3rd element to be moved
+        into the spot in the collection where the 2nd element was. Now, your loop moves on to the 3rd element in the
+        collection. But, that will skip over the element that is now in the 2nd position causing you to never remove it.
+        That means the only safe way to iterate through the actual collection and remove things is with a backwards
+        traversal because removing things form the end does not cause other elements to change their position in the
+        collection. Removing items from the front (which is what you were doing) does cause items to move in the collection.
+         */
+        //tableBody.childNodes.forEach(child => {node.removeChild(child);} DON'T USE IT
+
+        // Array.from() converts the live collection to a static array where items are not removed
+        // from the array while deleting items from the DOM.
+        Array.from(tableBody.childNodes).forEach((node) => {node.remove()});
+        console.log(tableBody.hasChildNodes());
     }
 
     questions.forEach((question) => {
@@ -60,11 +74,11 @@ function showTableData(questions) {
 
 function getQuestions() {
     console.log("Getting question from API...");
+    tag = document.getElementById("tag").value;
     let fullLink = source
         .concat("order=desc&").concat("activity=False&")
         .concat("answers=0&").concat("closed=False&")
         .concat(`tagged=${tag}&`).concat("site=stackoverflow");
-
     fetch(fullLink)
         .then((res) => {
             res.json()
