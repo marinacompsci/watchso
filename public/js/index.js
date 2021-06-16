@@ -3,7 +3,6 @@ let tableBody = document.getElementById("tableBody");
 let submitButton = document.getElementById("submitSearch");
 let tag = document.getElementById("tag").value;
 
-let questions;
 const source = "https://api.stackexchange.com/2.2/search/advanced?";
 
 /////////////////////  STARTING POINT //////////////////////////////////////////////////////////////////////
@@ -13,6 +12,8 @@ submitButton.onclick = () => {
 /////////////////////  FUNCTIONS //////////////////////////////////////////////////////////////////////
 
 function showTableData(questions) {
+    //TODO: what if there are no questions?
+
     console.log("Showing data...");
 
     if (tableBody.hasChildNodes()) {
@@ -20,6 +21,12 @@ function showTableData(questions) {
     }
 
     questions.forEach((question) => {
+        // Handle Date always in UTC
+        let date = new Date(0).setUTCSeconds(question.creation_date);
+        // Sometimes when we do operations on dates they get converted back into a number in JavaScript.
+        // We simply must make sure these are converted back to Date before passing them to another function
+        // From UTC to user's local time zome -> "toLocaleString()"
+        let q = new Question(question.title, new Date(date).toLocaleString() , question.owner.reputation, question.link);
         //TODO: Refactor this all to a single function called createTableData
         let tr = document.createElement("tr");
         tableBody.appendChild(tr);
@@ -28,17 +35,17 @@ function showTableData(questions) {
 
         let tdTitleAnchor = document.createElement("a");
         tdTitleAnchor.setAttribute('target', "_blank");
-        tdTitleAnchor.setAttribute('href', question.link);
-        tdTitleAnchor.innerText = question.title
+        tdTitleAnchor.setAttribute('href', q.link);
+        tdTitleAnchor.innerText = q.title
         tdTitle.appendChild(tdTitleAnchor)
         tr.appendChild(tdTitle);
 
         let tdDate = document.createElement("td");
-        tdDate.innerText = question.date;
+        tdDate.innerText = q.creation_date;
         tr.appendChild(tdDate);
 
         let tdOwnerRep = document.createElement("td");
-        tdOwnerRep.innerText = question.ownersRep;
+        tdOwnerRep.innerText = q.owner;
         tr.appendChild(tdOwnerRep);
     })
 
@@ -68,9 +75,9 @@ function getQuestions() {
 
 ///////////////////// OBJECTS ////////////////////////////////////////////////////////////////////////////////////
 
-function Question(title, date, owner, link) {
+function Question(title, creation_date, owner, link) {
     this.title = title;
-    this.date = date;
-    this.ownersRep = owner;
+    this.creation_date = creation_date;
+    this.owner = owner;
     this.link = link;
 }
