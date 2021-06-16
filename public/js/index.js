@@ -26,7 +26,7 @@ function showTableData(questions) {
         // Sometimes when we do operations on dates they get converted back into a number in JavaScript.
         // We simply must make sure these are converted back to Date before passing them to another function
         // From UTC to user's local time zome -> "toLocaleString()"
-        let q = new Question(question.title, new Date(date).toLocaleString() , question.owner.reputation, question.link);
+        let q = new Question(question.title, new Date(date).toLocaleString().replace(",", "") , question.owner.reputation, question.link);
         //TODO: Refactor this all to a single function called createTableData
         let tr = document.createElement("tr");
         tableBody.appendChild(tr);
