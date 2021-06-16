@@ -1,13 +1,18 @@
 let table = document.getElementById("resultsTable");
 let tableBody = document.getElementById("tableBody");
 let submitButton = document.getElementById("submitSearch");
-let tag = document.getElementById("tag").value;
+let input =  document.getElementById("tag");
+let tag = input.value;
 
 const source = "https://api.stackexchange.com/2.2/search/advanced?";
 
 /////////////////////  STARTING POINT //////////////////////////////////////////////////////////////////////
 submitButton.onclick = () => {
     getQuestions();
+};
+
+input.onkeypress = (ev) => {
+    if (ev.key === "Enter") {getQuestions();}
 };
 /////////////////////  FUNCTIONS //////////////////////////////////////////////////////////////////////
 
