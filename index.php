@@ -9,12 +9,26 @@
 </head>
 
 <body>
-    <form action="pages/RequestResult.php" method="GET">
+    <div class="search">
         <label>
-            <input type="text" placeholder="Enter a tag" name="tag"/>
+            <input type="text" placeholder="Enter a tag" name="tag" id="tag"/>
         </label>
-         <!-- TODO(JS): Check if input is empty -> Show alert -->
-        <button type="submit">Search</button>
-    </form>
+        <!-- TODO(JS): Check if input is empty -> Show alert -->
+        <button type="button" id="submitSearch">Search</button>
+    </div>
+
+
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Date</th>
+                <th>PO's reputation</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+    <script src="public/js/index.js"></script>
 </body>
+
 </html>

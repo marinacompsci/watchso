@@ -1,9 +1,14 @@
-form {
+input {
+    text-align: center;
+}
+.search {
     width: 25%;
-    margin: 25vh auto;
+    margin: 10vh auto 5vh auto;
 }
 
 table {
+    display: none;
+    /* TODO: In case the content is small, this table is not centered anymore -> fix with grid */
     width: 80%;
-    margin: 15vh auto;
+    margin: 5vh auto;
 }
