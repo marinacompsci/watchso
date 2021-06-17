@@ -45,7 +45,13 @@ function showTableData(questions) {
         // Sometimes when we do operations on dates they get converted back into a number in JavaScript.
         // We simply must make sure these are converted back to Date before passing them to another function
         // From UTC to user's local time zome -> "toLocaleString()"
-        let q = new Question(question.title, new Date(date).toLocaleString().replace(",", "") , question.owner.reputation, question.link);
+        let q = new Question(question.title,
+            new Date(date).toLocaleString().replace(",", ""),
+            question.link,
+            question.view_count,
+            question.answer_count,
+            question.score,
+            question.owner.reputation);
         //TODO: Refactor this all to a single function called createTableData
         let tr = document.createElement("tr");
         tableBody.appendChild(tr);
@@ -63,6 +69,18 @@ function showTableData(questions) {
         tdDate.innerText = q.creation_date;
         tr.appendChild(tdDate);
 
+        let tdViews = document.createElement("td");
+        tdViews.innerText = q.view_count;
+        tr.appendChild(tdViews);
+
+        let tdAnswer = document.createElement("td");
+        tdAnswer.innerText = q.answer_count;
+        tr.appendChild(tdAnswer);
+
+        let tdScore = document.createElement("td");
+        tdScore.innerText = q.score;
+        tr.appendChild(tdScore);
+
         let tdOwnerRep = document.createElement("td");
         tdOwnerRep.innerText = q.owner;
         tr.appendChild(tdOwnerRep);
@@ -77,7 +95,8 @@ function getQuestions() {
     tag = document.getElementById("tag").value;
     let fullLink = source
         .concat("order=desc&").concat("activity=False&")
-        .concat("answers=0&").concat("closed=False&")
+        //.concat("answers=0&").concat("closed=False&")
+        .concat("closed=False&")
         .concat(`tagged=${tag}&`).concat("site=stackoverflow");
     fetch(fullLink)
         .then((res) => {
@@ -94,9 +113,12 @@ function getQuestions() {
 
 ///////////////////// OBJECTS ////////////////////////////////////////////////////////////////////////////////////
 
-function Question(title, creation_date, owner, link) {
+function Question(title, creation_date, link, view_count, answer_count, score, owner) {
     this.title = title;
     this.creation_date = creation_date;
-    this.owner = owner;
     this.link = link;
+    this.view_count = view_count;
+    this.answer_count = answer_count;
+    this.score = score;
+    this.owner = owner;
 }
