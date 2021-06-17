@@ -91,6 +91,8 @@ function showTableData(questions) {
 
 
 function getQuestions() {
+    //TODO: Handle exceptions like no questions found
+    if (document.getElementById("tag").value === "") {return;}
     console.log("Getting question from API...");
     tag = document.getElementById("tag").value;
     let fullLink = source
